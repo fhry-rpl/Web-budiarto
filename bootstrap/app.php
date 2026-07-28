@@ -5,6 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
 $basePath = dirname(__DIR__);
 
 if (! is_writable($basePath.'/bootstrap/cache')) {
