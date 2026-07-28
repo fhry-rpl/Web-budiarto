@@ -8,6 +8,7 @@ require __DIR__.'/../vendor/autoload.php';
 register_shutdown_function(function () {
     $err = error_get_last();
     if ($err && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        error_log('SHUTDOWN: '.$err['message'].' in '.$err['file'].':'.$err['line']);
         if (! headers_sent()) {
             header('Content-Type: text/plain');
         }
