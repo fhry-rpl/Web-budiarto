@@ -50,6 +50,15 @@ if (str_starts_with($uri, '/__migrate/')) {
         $kernel = $app->make(Kernel::class);
         $kernel->bootstrap();
 
+        $dbUrl = getenv('DB_URL') ?: 'NOT SET';
+        $dbConfig = config('database.connections.pgsql');
+        echo "DB_HOST: " . ($dbConfig['host'] ?? 'N/A') . "\n";
+        echo "DB_USER: " . ($dbConfig['username'] ?? 'N/A') . "\n";
+        echo "DB_PASS: " . (isset($dbConfig['password']) ? 'SET(len='.strlen($dbConfig['password']).')' : 'N/A') . "\n";
+        echo "DB_DB: " . ($dbConfig['database'] ?? 'N/A') . "\n";
+        echo "DB_PORT: " . ($dbConfig['port'] ?? 'N/A') . "\n";
+        echo "DB_SSLMODE: " . ($dbConfig['sslmode'] ?? 'N/A') . "\n";
+
         $exitCode = Artisan::call('migrate', ['--force' => true]);
         echo "migrate exit code: {$exitCode}\n";
         echo Artisan::output();
