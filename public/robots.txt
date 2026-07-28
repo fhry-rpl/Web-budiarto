@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin
+Disallow: /storage
+
+Sitemap: {{ env('APP_URL') }}/sitemap.xml
