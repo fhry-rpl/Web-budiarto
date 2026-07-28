@@ -43,4 +43,6 @@ if (isset($tmpBootstrap)) {
     $app->useBootstrapPath($tmpBootstrap);
 }
 
+$app->bind('db.connector.pgsql', fn () => new App\Database\Connectors\PostgresConnector);
+
 return $app;
