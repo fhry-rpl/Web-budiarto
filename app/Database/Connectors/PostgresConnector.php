@@ -10,7 +10,9 @@ class PostgresConnector extends BasePostgresConnector
     {
         $dsn = parent::addSslOptions($dsn, $config);
 
-        if (isset($config['host']) && preg_match('/^ep-([^.]+)/', $config['host'], $m)) {
+        if (! empty($config['neon_options'])) {
+            $dsn .= ";options='{$config['neon_options']}'";
+        } elseif (isset($config['host']) && preg_match('/^ep-([^.]+)/', $config['host'], $m)) {
             $dsn .= ";options='endpoint={$m[1]}'";
         }
 

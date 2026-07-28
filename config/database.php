@@ -84,35 +84,26 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'charset' => env('DB_CHARSET', 'utf8'),
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'search_path' => 'public',
-        ] + (function () {
+        'pgsql' => (function () {
             $url = env('DB_URL');
-            if (! $url) {
-                return [
-                    'host' => env('DB_HOST', '127.0.0.1'),
-                    'port' => env('DB_PORT', '5432'),
-                    'database' => env('DB_DATABASE', 'laravel'),
-                    'username' => env('DB_USERNAME', 'root'),
-                    'password' => env('DB_PASSWORD', ''),
-                    'sslmode' => env('DB_SSLMODE', 'prefer'),
-                ];
+            if ($url) {
+                $parts = parse_url($url);
+                parse_str($parts['query'] ?? '', $query);
             }
 
-            $parts = parse_url($url);
-            parse_str($parts['query'] ?? '', $query);
-
             return [
-                'host' => $parts['host'] ?? '127.0.0.1',
-                'port' => $parts['port'] ?? '5432',
-                'database' => ltrim($parts['path'] ?? '', '/'),
-                'username' => $parts['user'] ?? 'root',
-                'password' => $parts['pass'] ?? '',
-                'sslmode' => $query['sslmode'] ?? 'prefer',
+                'driver' => 'pgsql',
+                'charset' => env('DB_CHARSET', 'utf8'),
+                'prefix' => '',
+                'prefix_indexes' => true,
+                'search_path' => 'public',
+                'host' => $parts['host'] ?? env('DB_HOST', '127.0.0.1'),
+                'port' => $parts['port'] ?? env('DB_PORT', '5432'),
+                'database' => isset($parts['path']) ? ltrim($parts['path'], '/') : env('DB_DATABASE', 'laravel'),
+                'username' => $parts['user'] ?? env('DB_USERNAME', 'root'),
+                'password' => $parts['pass'] ?? env('DB_PASSWORD', ''),
+                'sslmode' => $query['sslmode'] ?? env('DB_SSLMODE', 'prefer'),
+                'neon_options' => $query['options'] ?? null,
             ];
         })(),
 
