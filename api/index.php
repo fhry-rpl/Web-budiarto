@@ -5,6 +5,17 @@ use Illuminate\Support\Facades\Artisan;
 
 require __DIR__.'/../vendor/autoload.php';
 
+register_shutdown_function(function () {
+    $err = error_get_last();
+    if ($err && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        if (! headers_sent()) {
+            header('Content-Type: text/plain');
+        }
+        echo 'SHUTDOWN: '.$err['message']."\n";
+        echo $err['file'].':'.$err['line']."\n";
+    }
+});
+
 // Load .env.vercel as fallback if .env doesn't exist (e.g. on Vercel serverless)
 // Vercel Dashboard env vars take precedence (safeLoad won't overwrite existing vars)
 if (! file_exists(__DIR__.'/../.env')) {
@@ -74,4 +85,13 @@ if (str_starts_with($uri, '/__migrate/')) {
     exit;
 }
 
-require __DIR__.'/../public/index.php';
+try {
+    require __DIR__.'/../public/index.php';
+} catch (Throwable $e) {
+    if (! headers_sent()) {
+        header('Content-Type: text/plain');
+        http_response_code(500);
+    }
+    echo 'Fatal: '.get_class($e).': '.$e->getMessage()."\n";
+    echo $e->getFile().':'.$e->getLine()."\n";
+}
