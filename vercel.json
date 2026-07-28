@@ -8,9 +8,10 @@
         }
     },
     "routes": [
-        { "src": "/favicon.ico", "dest": "/public/favicon.ico" },
-        { "src": "/favicon.png", "dest": "/public/favicon.ico" },
-        { "src": "/robots.txt", "dest": "/public/robots.txt" },
+        { "src": "/build/(.*)", "dest": "/build/$1" },
+        { "src": "/favicon.ico", "dest": "/favicon.ico" },
+        { "src": "/favicon.png", "dest": "/favicon.ico" },
+        { "src": "/robots.txt", "dest": "/robots.txt" },
         { "src": "/(.*)", "dest": "/api/index.php" }
     ],
     "buildCommand": "npm run build",
