@@ -50,6 +50,25 @@ if (str_starts_with($uri, '/__boot')) {
     exit;
 }
 
+if (str_starts_with($uri, '/__handle')) {
+    header('Content-Type: text/plain');
+    try {
+        $app = require __DIR__.'/../bootstrap/app.php';
+        $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+        $request = Illuminate\Http\Request::capture();
+        $request->server->set('REQUEST_URI', '/up');
+        $response = $kernel->handle($request);
+        echo 'Status: ' . $response->getStatusCode() . "\n";
+        echo 'Body: ' . $response->getContent() . "\n";
+        $kernel->terminate($request, $response);
+    } catch (Throwable $e) {
+        echo 'ERROR: ' . get_class($e) . ': ' . $e->getMessage() . "\n";
+        echo $e->getFile() . ':' . $e->getLine() . "\n";
+        echo $e->getTraceAsString() . "\n";
+    }
+    exit;
+}
+
 if (str_starts_with($uri, '/__migrate/')) {
     header('Content-Type: text/plain');
     $token = substr($uri, strlen('/__migrate/'));
