@@ -50,13 +50,21 @@ if (str_starts_with($uri, '/__migrate/')) {
         $kernel = $app->make(Kernel::class);
         $kernel->bootstrap();
 
+        $db = $app->make('db');
+        $db->connection('pgsql')->getPdo();
+        echo "DB connection OK\n";
+
         $exitCode = Artisan::call('migrate', ['--force' => true]);
         echo "migrate exit code: {$exitCode}\n";
         echo Artisan::output();
 
-        $exitCode = Artisan::call('db:seed', ['--force' => true]);
-        echo "db:seed exit code: {$exitCode}\n";
-        echo Artisan::output();
+        try {
+            $exitCode = Artisan::call('db:seed', ['--force' => true]);
+            echo "db:seed exit code: {$exitCode}\n";
+            echo Artisan::output();
+        } catch (Throwable $e) {
+            echo 'db:seed error (non-fatal): '.$e->getMessage()."\n";
+        }
 
         echo "\nMigration completed successfully.\n";
     } catch (Throwable $e) {
