@@ -65,6 +65,14 @@ if (str_starts_with($uri, '/__handle')) {
             echo "\n--- Exception ---\n";
             echo get_class($e) . ': ' . $e->getMessage() . "\n";
             echo $e->getFile() . ':' . $e->getLine() . "\n";
+            echo "\nTrace:\n" . $e->getTraceAsString() . "\n";
+            $prev = $e->getPrevious();
+            if ($prev) {
+                echo "\n--- Previous Exception ---\n";
+                echo get_class($prev) . ': ' . $prev->getMessage() . "\n";
+                echo $prev->getFile() . ':' . $prev->getLine() . "\n";
+                echo "\nTrace:\n" . $prev->getTraceAsString() . "\n";
+            }
         }
     } catch (Throwable $e) {
         echo 'ERROR: ' . get_class($e) . ': ' . $e->getMessage() . "\n";
