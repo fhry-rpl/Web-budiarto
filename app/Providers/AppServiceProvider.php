@@ -38,6 +38,7 @@ use App\Repositories\Eloquent\SettingRepository;
 use App\Repositories\Eloquent\StaffRepository;
 use App\View\Composers\NavigationComposer;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -68,5 +69,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(ContactSubmission::class, ContactSubmissionPolicy::class);
 
         View::composer(['layouts.front', 'components.navigation'], NavigationComposer::class);
+
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }

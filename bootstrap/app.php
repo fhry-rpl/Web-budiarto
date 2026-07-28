@@ -35,6 +35,8 @@ $app = Application::configure(basePath: $basePath)
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
         ]);
+
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
