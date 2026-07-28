@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /admin
 Disallow: /storage
 
-Sitemap: {{ env('APP_URL') }}/sitemap.xml
+Sitemap: https://laravel-web-peach.vercel.app/sitemap.xml

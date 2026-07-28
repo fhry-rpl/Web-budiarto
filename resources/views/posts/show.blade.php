@@ -2,6 +2,11 @@
 
 @section('title', $post->title . ' — ' . config('app.name'))
 @section('meta_description', $post->excerpt)
+@section('og_title', $post->title . ' — ' . config('app.name'))
+@section('og_description', $post->excerpt)
+@section('og_url', route('posts.show', $post->slug))
+@section('twitter_title', $post->title . ' — ' . config('app.name'))
+@section('twitter_description', $post->excerpt)
 
 @section('content')
     <article class="py-20 sm:py-28">

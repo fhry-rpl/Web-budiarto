@@ -1,6 +1,12 @@
 @extends('layouts.front')
 
 @section('title', $service->title . ' — ' . config('app.name'))
+@section('meta_description', $service->description)
+@section('og_title', $service->title . ' — ' . config('app.name'))
+@section('og_description', $service->description)
+@section('og_url', route('services.show', $service->slug))
+@section('twitter_title', $service->title . ' — ' . config('app.name'))
+@section('twitter_description', $service->description)
 
 @section('content')
     <section class="py-20 sm:py-28">

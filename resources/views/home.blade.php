@@ -1,6 +1,12 @@
 @extends('layouts.front')
 
 @section('title', config('app.name'))
+@section('meta_description', 'Website resmi RENPRO UPBU Budiarto - Rencana Program dan Pengembangan Bandar Udara Budiarto')
+@section('og_title', config('app.name'))
+@section('og_description', 'Website resmi RENPRO UPBU Budiarto - Rencana Program dan Pengembangan Bandar Udara Budiarto')
+@section('og_url', url('/'))
+@section('twitter_title', config('app.name'))
+@section('twitter_description', 'Website resmi RENPRO UPBU Budiarto - Rencana Program dan Pengembangan Bandar Udara Budiarto')
 
 @section('content')
     {{-- =============== SECTION 1: HERO =============== --}}
