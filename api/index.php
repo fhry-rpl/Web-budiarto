@@ -50,10 +50,6 @@ if (str_starts_with($uri, '/__migrate/')) {
         $kernel = $app->make(Kernel::class);
         $kernel->bootstrap();
 
-        $dbUrl = getenv('DB_URL') ?: 'NOT SET';
-        $dbUrlMasked = preg_replace('/:\/\/[^:]+:([^@]+)@/', '://user:***@', $dbUrl);
-        echo "DB_URL: {$dbUrlMasked}\n";
-
         $exitCode = Artisan::call('migrate', ['--force' => true]);
         echo "migrate exit code: {$exitCode}\n";
         echo Artisan::output();
