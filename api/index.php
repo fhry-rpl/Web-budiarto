@@ -5,11 +5,6 @@ use Illuminate\Support\Facades\Artisan;
 
 require __DIR__.'/../vendor/autoload.php';
 
-$cacheDir = __DIR__.'/../bootstrap/cache';
-if (! is_dir($cacheDir)) {
-    mkdir($cacheDir, 0755, true);
-}
-
 // Load .env.vercel as fallback if .env doesn't exist (e.g. on Vercel serverless)
 // Vercel Dashboard env vars take precedence (safeLoad won't overwrite existing vars)
 if (! file_exists(__DIR__.'/../.env')) {
