@@ -74,12 +74,15 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-                "laravel/breeze",
-                "laravel/pail",
-                "laravel/pao",
-                "nunomaduro/collision"
-            ]
+"dont-discover": [
+    "laravel/boost",
+    "laravel/breeze",
+    "laravel/mcp",
+    "laravel/pail",
+    "laravel/pao",
+    "laravel/roster",
+    "nunomaduro/collision"
+]
         }
     },
     "config": {
