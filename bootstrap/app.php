@@ -5,7 +5,26 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-return Application::configure(basePath: dirname(__DIR__))
+$basePath = dirname(__DIR__);
+
+if (! is_writable($basePath.'/bootstrap/cache')) {
+    $tmpBootstrap = '/tmp/bootstrap';
+    $tmpCacheDir = $tmpBootstrap.'/cache';
+
+    if (! is_dir($tmpCacheDir)) {
+        mkdir($tmpCacheDir, 0755, true);
+    }
+
+    foreach (['packages.php', 'events.php'] as $file) {
+        $src = $basePath.'/bootstrap/cache/'.$file;
+        $dst = $tmpCacheDir.'/'.$file;
+        if (file_exists($src) && ! file_exists($dst)) {
+            copy($src, $dst);
+        }
+    }
+}
+
+$app = Application::configure(basePath: $basePath)
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
@@ -19,3 +38,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
+
+if (isset($tmpBootstrap)) {
+    $app->useBootstrapPath($tmpBootstrap);
+}
+
+return $app;
