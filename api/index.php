@@ -17,9 +17,36 @@ if (! file_exists(__DIR__.'/../.env')) {
 
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
 
+if (str_starts_with($uri, '/__test')) {
+    header('Content-Type: text/plain');
+    echo 'PHP_VERSION: ' . PHP_VERSION . "\n";
+    echo 'APP_DEBUG: ' . (getenv('APP_DEBUG') ?: 'not set') . "\n";
+    echo 'DB_URL: ' . (getenv('DB_URL') ? 'SET' : 'NOT SET') . "\n";
+    echo 'PDO drivers: ' . implode(', ', PDO::getAvailableDrivers()) . "\n";
+    exit;
+}
+
 if (str_starts_with($uri, '/__ping')) {
     header('Content-Type: application/json');
     echo json_encode(['status' => 'ok', 'timestamp' => time()]);
+    exit;
+}
+
+if (str_starts_with($uri, '/__boot')) {
+    header('Content-Type: text/plain');
+    try {
+        $t = microtime(true);
+        $app = require __DIR__.'/../bootstrap/app.php';
+        $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+        $kernel->bootstrap();
+        echo 'OK - boot time: ' . (round((microtime(true) - $t) * 1000)) . "ms\n";
+        echo 'Config connections: ' . json_encode(array_keys(config('database.connections', []))) . "\n";
+        echo 'Default connection: ' . config('database.default', 'none') . "\n";
+        echo 'APP_KEY set: ' . (config('app.key') ? 'yes' : 'no') . "\n";
+    } catch (Throwable $e) {
+        echo 'ERROR: ' . get_class($e) . ': ' . $e->getMessage() . "\n";
+        echo $e->getFile() . ':' . $e->getLine() . "\n";
+    }
     exit;
 }
 
