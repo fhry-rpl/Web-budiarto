@@ -18,7 +18,7 @@
     "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "APP_KEY": "base64:EL1zsCtqwmyIu2uANb2aHppcqYdeYYPaEyMtWcGbDc4=",
         "APP_URL": "https://web-budiarto.vercel.app",
         "NODE_ENV": "production",
@@ -28,13 +28,8 @@
         "CACHE_STORE": "array",
         "LOG_CHANNEL": "stderr",
         "LOG_LEVEL": "error",
-        "FILESYSTEM_DISK": "s3",
-        "UPLOADS_DISK": "s3",
-        "AWS_SECRET_ACCESS_KEY": "",
-        "AWS_DEFAULT_REGION": "auto",
-        "AWS_BUCKET": "",
-        "AWS_ENDPOINT": "https://k0x3mch1pfuksbtw.private.blob.vercel-storage.com",
-        "AWS_URL": "https://k0x3mch1pfuksbtw.private.blob.vercel-storage.com",
+        "FILESYSTEM_DISK": "local",
+        "UPLOADS_DISK": "local",
         "COMPOSER_PROCESS_TIMEOUT": "0",
         "COMPOSER_ALLOW_SUPERUSER": "1"
     }

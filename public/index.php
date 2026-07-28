@@ -17,14 +17,4 @@ require __DIR__.'/../vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-try {
-    $app->handleRequest(Request::capture());
-} catch (Throwable $e) {
-    error_log('PUBLIC_INDEX: '.get_class($e).': '.$e->getMessage().' in '.$e->getFile().':'.$e->getLine());
-    if (! headers_sent()) {
-        http_response_code(500);
-        header('Content-Type: text/plain');
-    }
-    echo get_class($e) . ': ' . $e->getMessage() . "\n";
-    echo $e->getFile() . ':' . $e->getLine() . "\n";
-}
+$app->handleRequest(Request::capture());
