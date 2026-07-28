@@ -57,23 +57,18 @@ if (str_starts_with($uri, '/__handle')) {
         $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
         $request = Illuminate\Http\Request::capture();
         $request->server->set('REQUEST_URI', '/up');
-        echo 'Session driver: ' . config('session.driver') . "\n";
-        $appKey = config('app.key');
-        $decoded = base64_decode(substr($appKey, 7));
-        echo 'APP_KEY decoded length: ' . strlen($decoded) . "\n";
         $response = $kernel->handle($request);
         echo 'Status: ' . $response->getStatusCode() . "\n";
         echo 'Body: ' . $response->getContent() . "\n";
-        if ($response->getStatusCode() >= 500 && $response->exception()) {
+        if ($response->getStatusCode() >= 500 && method_exists($response, 'exception') && $response->exception()) {
             $e = $response->exception();
-            echo 'Exception: ' . get_class($e) . ': ' . $e->getMessage() . "\n";
+            echo "\n--- Exception ---\n";
+            echo get_class($e) . ': ' . $e->getMessage() . "\n";
             echo $e->getFile() . ':' . $e->getLine() . "\n";
         }
-        $kernel->terminate($request, $response);
     } catch (Throwable $e) {
         echo 'ERROR: ' . get_class($e) . ': ' . $e->getMessage() . "\n";
         echo $e->getFile() . ':' . $e->getLine() . "\n";
-        echo $e->getTraceAsString() . "\n";
     }
     exit;
 }
