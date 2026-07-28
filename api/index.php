@@ -58,12 +58,15 @@ if (str_starts_with($uri, '/__migrate/')) {
         echo "migrate exit code: {$exitCode}\n";
         echo Artisan::output();
 
-        try {
-            $exitCode = Artisan::call('db:seed', ['--force' => true]);
-            echo "db:seed exit code: {$exitCode}\n";
-            echo Artisan::output();
-        } catch (Throwable $e) {
-            echo 'db:seed error (non-fatal): '.$e->getMessage()."\n";
+        $seeders = ['CategorySeeder', 'PostSeeder', 'DocumentSeeder', 'ServiceSeeder', 'GallerySeeder', 'PageSeeder', 'StaffSeeder', 'SettingSeeder', 'MenuItemSeeder'];
+        foreach ($seeders as $seeder) {
+            try {
+                $exitCode = Artisan::call('db:seed', ['--class' => "Database\\Seeders\\{$seeder}", '--force' => true]);
+                echo "{$seeder}: exit {$exitCode}\n";
+                echo Artisan::output();
+            } catch (Throwable $e) {
+                echo "{$seeder}: error (non-fatal): " . $e->getMessage() . "\n";
+            }
         }
 
         echo "\nMigration completed successfully.\n";
