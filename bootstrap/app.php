@@ -46,14 +46,8 @@ if (isset($tmpBootstrap)) {
 $app->bind('db.connector.pgsql', fn () => new App\Database\Connectors\PostgresConnector);
 
 // Redirect writable paths to /tmp when the filesystem is read-only
-if (isset($tmpCacheDir)) {
-    $config = $app->make('config');
-    $config->set('view.compiled', '/tmp/storage/framework/views');
-    $config->set('view.cache', true);
-
-    if (! is_dir('/tmp/storage/framework/views')) {
-        mkdir('/tmp/storage/framework/views', 0755, true);
-    }
+if (isset($tmpCacheDir) && ! is_dir('/tmp/storage/framework/views')) {
+    mkdir('/tmp/storage/framework/views', 0755, true);
 }
 
 return $app;
