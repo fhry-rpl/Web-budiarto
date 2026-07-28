@@ -18,7 +18,7 @@
     "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "APP_KEY": "base64:EL1zsCtqwmyIu2uANb2aHppcqYdeYYPaEyMtWcGbDc4=",
         "APP_URL": "https://web-budiarto.vercel.app",
         "NODE_ENV": "production",

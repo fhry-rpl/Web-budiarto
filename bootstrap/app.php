@@ -1,5 +1,6 @@
 <?php
 
+use App\Database\Connectors\PostgresConnector;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -43,7 +44,7 @@ if (isset($tmpBootstrap)) {
     $app->useBootstrapPath($tmpBootstrap);
 }
 
-$app->bind('db.connector.pgsql', fn () => new App\Database\Connectors\PostgresConnector);
+$app->bind('db.connector.pgsql', fn () => new PostgresConnector);
 
 // Redirect writable paths to /tmp when the filesystem is read-only
 if (isset($tmpCacheDir) && ! is_dir('/tmp/storage/framework/views')) {
